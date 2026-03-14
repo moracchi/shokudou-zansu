@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Inventory | 各メニューの残数</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&family=Noto+Serif+JP:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="header-title">各メニューの残数</h1>
+    </header>
+
+    <main class="dashboard" id="dashboard">
+        <!-- カードはJSで動的生成 -->
+    </main>
+
+    <footer class="footer">
+        <p>&copy; シップヘルスケアフード</p>
+        <div class="footer-actions">
+            <button id="undo-btn" class="footer-button undo-button" disabled>元に戻す</button>
+            <button id="settings-btn" class="footer-button settings-button">設定 / リセット</button>
+        </div>
+    </footer>
+
+    <!-- 設定モーダル -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h2>初期値設定</h2>
+            <div class="settings-form" id="settings-form">
+                <!-- JSで動的生成 -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="btn-cancel">キャンセル</button>
+                <button class="btn-save" id="btn-save">保存してリセット</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

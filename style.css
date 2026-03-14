@@ -1,0 +1,382 @@
+/* ===== リセット ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== 変数 ===== */
+:root {
+    --bg-body: #0a0a0a;
+    --bg-card: #141414;
+    --bg-card-hover: #1a1a1a;
+    --border-card: #222;
+    --border-card-hover: #444;
+    --color-primary: #d4af37;
+    --color-text: #e0e0e0;
+    --color-label: #aaa;
+    --color-count: #ffffff;
+    --color-danger: #ff3333;
+    --color-danger-bg: #330505;
+    --color-danger-label: #ff6666;
+    --color-soldout: #ff4d4d;
+    --radius-card: 20px;
+    --transition-fast: 0.1s ease-out;
+    --transition-mid: 0.2s ease;
+}
+
+/* ===== ボディ ===== */
+body {
+    background-color: var(--bg-body);
+    color: var(--color-text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== ヘッダー ===== */
+.header {
+    text-align: center;
+    padding: 1vh 0;
+    flex-shrink: 0;
+}
+
+.header-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.2rem, 4vh, 2.5rem);
+    color: var(--color-primary);
+    letter-spacing: 0.1em;
+    font-weight: 800;
+}
+
+/* ===== ダッシュボード ===== */
+.dashboard {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5vh;
+    padding: 1vh 2vw 1.5vh;
+    width: 100%;
+    min-height: 0;
+}
+
+/* ===== カード ===== */
+.menu-card {
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-card);
+    border-radius: var(--radius-card);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: transform var(--transition-fast),
+                background-color var(--transition-mid),
+                border-color var(--transition-mid);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+}
+
+.menu-card:hover {
+    background-color: var(--bg-card-hover);
+    border-color: var(--border-card-hover);
+}
+
+.menu-card:active {
+    background-color: #222;
+}
+
+.menu-card.active-press {
+    transform: scale(0.97);
+}
+
+/* ===== メニューラベル ===== */
+.menu-label {
+    font-size: clamp(1.5rem, 6vh, 4rem);
+    font-weight: 800;
+    color: var(--color-label);
+    margin-bottom: -1vh;
+    line-height: 1.1;
+}
+
+/* ===== 数字表示 ===== */
+.count-window {
+    height: 30vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.count-strip {
+    font-size: clamp(6rem, 28vh, 20rem);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-count);
+}
+
+/* ===== 完売御礼 ===== */
+.sold-out-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(3rem, 11vh, 8rem) !important;
+    color: var(--color-soldout);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    font-weight: 900;
+}
+
+/* ===== ＋ボタン ===== */
+.add-button {
+    position: absolute;
+    bottom: 2vh;
+    right: 2vw;
+    width: clamp(2.5rem, 6vh, 4rem);
+    height: clamp(2.5rem, 6vh, 4rem);
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: clamp(1.2rem, 3vh, 2rem);
+    font-weight: bold;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color var(--transition-mid), transform var(--transition-fast);
+    z-index: 10;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.add-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.add-button:active {
+    transform: scale(0.9);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 完売時は＋ボタンを目立たせる */
+.low-stock .add-button {
+    background-color: rgba(255, 100, 100, 0.25);
+    border-color: rgba(255, 100, 100, 0.5);
+}
+
+/* ===== 残り3食以下の警告 ===== */
+.low-stock {
+    background-color: var(--color-danger-bg) !important;
+    border-color: var(--color-danger) !important;
+    box-shadow: inset 0 0 50px rgba(255, 0, 0, 0.2);
+}
+
+.low-stock .count-strip {
+    color: var(--color-danger);
+    text-shadow: 0 0 30px rgba(255, 51, 51, 0.5);
+}
+
+.low-stock .menu-label {
+    color: var(--color-danger-label);
+}
+
+/* ===== アニメーション ===== */
+@keyframes slideDown {
+    0%   { transform: translateY(-80%); opacity: 0; }
+    100% { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes slideUp {
+    0%   { transform: translateY(80%); opacity: 0; }
+    100% { transform: translateY(0);   opacity: 1; }
+}
+
+.slide-down { animation: slideDown 0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards; }
+.slide-up   { animation: slideUp   0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards; }
+
+/* ===== フッター ===== */
+.footer {
+    text-align: center;
+    padding: 0.5vh 2vw;
+    font-size: clamp(0.6rem, 1.2vh, 0.85rem);
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 1vw;
+    align-items: center;
+}
+
+.footer-button {
+    background: transparent;
+    color: #888;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 0.5vh 1vw;
+    font-size: clamp(0.65rem, 1.5vh, 0.9rem);
+    cursor: pointer;
+    transition: all var(--transition-mid);
+    white-space: nowrap;
+}
+
+.footer-button:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+.footer-button:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.footer-button:disabled:hover {
+    color: #888;
+    border-color: #555;
+}
+
+.undo-button:not(:disabled) {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.undo-button:not(:disabled):hover {
+    color: #fff;
+    background-color: rgba(212, 175, 55, 0.15);
+    border-color: var(--color-primary);
+}
+
+/* ===== モーダル ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #1e1e1e;
+    padding: 4vh 4vw;
+    border-radius: 15px;
+    border: 1px solid #444;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-content h2 {
+    color: #fff;
+    margin-bottom: 3vh;
+    text-align: center;
+    font-size: clamp(1rem, 2.5vh, 1.5rem);
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    margin-bottom: 4vh;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-group label {
+    font-size: clamp(0.9rem, 2vh, 1.2rem);
+    color: #ccc;
+}
+
+.form-group input {
+    width: 80px;
+    padding: 1vh;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    font-size: clamp(0.9rem, 2vh, 1.2rem);
+    text-align: center;
+    border-radius: 5px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 2vw;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 1.5vh;
+    font-size: clamp(0.8rem, 1.8vh, 1.1rem);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color var(--transition-mid);
+}
+
+.btn-cancel {
+    background-color: #444;
+    color: #fff;
+}
+
+.btn-cancel:hover {
+    background-color: #555;
+}
+
+.btn-save {
+    background-color: var(--color-primary);
+    color: #000;
+}
+
+.btn-save:hover {
+    background-color: #c09e30;
+}
+
+/* ===== タブレット最適化 (768px以下) ===== */
+@media (max-width: 768px) and (orientation: portrait) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        gap: 1vh;
+        padding: 0.5vh 2vw 1vh;
+    }
+
+    .count-window {
+        height: 12vh;
+    }
+
+    .count-strip {
+        font-size: clamp(4rem, 12vh, 8rem);
+    }
+
+    .menu-label {
+        font-size: clamp(1.2rem, 3vh, 2rem);
+        margin-bottom: 0;
+    }
+
+    .sold-out-text {
+        font-size: clamp(2rem, 6vh, 4rem) !important;
+    }
+}
