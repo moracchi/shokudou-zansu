@@ -21,20 +21,18 @@
         <p>&copy; シップヘルスケアフード</p>
         <div class="footer-actions">
             <button id="undo-btn" class="footer-button undo-button" disabled>元に戻す</button>
-            <button id="settings-btn" class="footer-button settings-button">設定 / リセット</button>
+            <button id="settings-btn" class="footer-button settings-button">リセット</button>
         </div>
     </footer>
 
     <!-- 設定モーダル -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
-            <h2>初期値設定</h2>
-            <div class="settings-form" id="settings-form">
-                <!-- JSで動的生成 -->
-            </div>
+            <h2>リセット確認</h2>
+            <p style="text-align: center; color: #ccc; margin-bottom: 3vh; font-size: 1.2rem; line-height: 1.5;">全てのメニューを初期状態（〇）に<br>リセットしますか？</p>
             <div class="modal-actions">
                 <button class="btn-cancel" id="btn-cancel">キャンセル</button>
-                <button class="btn-save" id="btn-save">保存してリセット</button>
+                <button class="btn-save" id="btn-save">リセットする</button>
             </div>
         </div>
     </div>

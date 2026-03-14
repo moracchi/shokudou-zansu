@@ -20,7 +20,8 @@
     --color-danger-bg: #330505;
     --color-danger-label: #ff6666;
     --color-soldout: #ff4d4d;
-    --radius-card: 20px;
+    --color-safe: #4ade80;
+    --radius-card: 24px;
     --transition-fast: 0.1s ease-out;
     --transition-mid: 0.2s ease;
 }
@@ -46,10 +47,11 @@ body {
 
 .header-title {
     font-family: 'Inter', sans-serif;
-    font-size: clamp(1.2rem, 4vh, 2.5rem);
+    font-size: clamp(1.5rem, 4vh, 3rem);
     color: var(--color-primary);
-    letter-spacing: 0.1em;
-    font-weight: 800;
+    letter-spacing: 0.15em;
+    font-weight: 900;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
 }
 
 /* ===== ダッシュボード ===== */
@@ -66,9 +68,10 @@ body {
 
 /* ===== カード ===== */
 .menu-card {
-    background-color: var(--bg-card);
+    background: linear-gradient(145deg, #181818, #111111);
     border: 2px solid var(--border-card);
     border-radius: var(--radius-card);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -85,12 +88,14 @@ body {
 }
 
 .menu-card:hover {
-    background-color: var(--bg-card-hover);
+    background: linear-gradient(145deg, #1e1e1e, #141414);
     border-color: var(--border-card-hover);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.08);
 }
 
 .menu-card:active {
-    background-color: #222;
+    background: #111;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8) inset;
 }
 
 .menu-card.active-press {
@@ -118,9 +123,16 @@ body {
 
 .count-strip {
     font-size: clamp(6rem, 28vh, 20rem);
-    font-weight: 800;
+    font-weight: 900;
     line-height: 1;
     color: var(--color-count);
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+}
+
+.status-circle {
+    color: var(--color-safe);
+    font-size: clamp(5rem, 25vh, 18rem);
+    text-shadow: 0 0 40px rgba(74, 222, 128, 0.4);
 }
 
 /* ===== 完売御礼 ===== */
@@ -309,34 +321,7 @@ body {
     font-size: clamp(1rem, 2.5vh, 1.5rem);
 }
 
-.settings-form {
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-    margin-bottom: 4vh;
-}
-
-.form-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.form-group label {
-    font-size: clamp(0.9rem, 2vh, 1.2rem);
-    color: #ccc;
-}
-
-.form-group input {
-    width: 80px;
-    padding: 1vh;
-    background-color: #333;
-    border: 1px solid #555;
-    color: #fff;
-    font-size: clamp(0.9rem, 2vh, 1.2rem);
-    text-align: center;
-    border-radius: 5px;
-}
+/* Settings Form styles removed */
 
 .modal-actions {
     display: flex;

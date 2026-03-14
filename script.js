@@ -7,8 +7,8 @@
  */
 
 // ===== 定数 =====
-const DEFAULT_COUNT = 20;
-const LOW_STOCK_THRESHOLD = 3;
+const DEFAULT_COUNT = 5;
+const LOW_STOCK_THRESHOLD = 2;
 const UNDO_STACK_MAX = 30;
 
 // ===== メニュー定義（ここを変えればメニュー追加・変更可能） =====
@@ -103,14 +103,8 @@ function buildDashboard() {
         });
         dashboard.appendChild(card);
 
-        // 設定フォーム
-        const group = document.createElement('div');
-        group.className = 'form-group';
-        group.innerHTML = `
-            <label>${m.label}</label>
-            <input type="number" id="setting-${m.key}" min="0" />
-        `;
-        settingsForm.appendChild(group);
+        // 設定フォームは不要になったため削除
+
     });
 
     // ＋ボタンのイベント（イベント委譲）
@@ -217,6 +211,9 @@ function triggerSlotAnimation(key, newValue, direction) {
             timeEl.classList.add('sold-out-time');
             el.appendChild(timeEl);
         }
+    } else if (newValue >= 5) {
+        el.innerText = '〇';
+        el.classList.add('status-circle');
     } else {
         el.innerText = newValue;
     }
@@ -265,9 +262,6 @@ document.addEventListener('keydown', (e) => {
 const modal = document.getElementById('settings-modal');
 
 function openSettings() {
-    MENU_CONFIG.forEach(m => {
-        document.getElementById(`setting-${m.key}`).value = menuState[m.key].initialCount;
-    });
     modal.classList.add('show');
 }
 
@@ -277,12 +271,9 @@ function closeSettings() {
 
 function saveSettings() {
     MENU_CONFIG.forEach(m => {
-        const val = parseInt(document.getElementById(`setting-${m.key}`).value, 10);
-        if (!isNaN(val) && val >= 0) {
-            menuState[m.key].initialCount = val;
-            menuState[m.key].count = val;
-            menuState[m.key].soldOutTime = null; // リセット時に時間もクリア
-        }
+        menuState[m.key].initialCount = DEFAULT_COUNT;
+        menuState[m.key].count = DEFAULT_COUNT;
+        menuState[m.key].soldOutTime = null; // リセット時に時間もクリア
     });
 
     undoStack = [];
