@@ -28,6 +28,7 @@ MENU_CONFIG.forEach(m => {
     menuState[m.key] = {
         count: DEFAULT_COUNT,
         initialCount: DEFAULT_COUNT,
+        soldOutTime: null, // 売り切れ時間を記録するプロパティ
     };
 });
 
@@ -123,8 +124,8 @@ function buildDashboard() {
 }
 
 // ===== Undo機能 =====
-function pushUndo(key, prevCount) {
-    undoStack.push({ key, prevCount, timestamp: Date.now() });
+function pushUndo(key, prevCount, prevTime) {
+    undoStack.push({ key, prevCount, prevTime, timestamp: Date.now() });
     if (undoStack.length > UNDO_STACK_MAX) {
         undoStack.shift();
     }
@@ -136,6 +137,7 @@ function performUndo() {
     const action = undoStack.pop();
     const item = menuState[action.key];
     item.count = action.prevCount;
+    item.soldOutTime = action.prevTime || null; // 時間状態の復元
     triggerSlotAnimation(action.key, item.count, 'up');
     updateCardStyle(action.key);
     saveState();
@@ -148,19 +150,32 @@ function updateUndoButton() {
     btn.disabled = undoStack.length === 0;
 }
 
-// ===== 更新処理 =====
 function handleUpdate(key, direction) {
     const item = menuState[key];
     const prevCount = item.count;
+    const prevTime = item.soldOutTime; // 時間を復元するための記憶
 
     if (direction === 'up') {
         item.count++;
-        pushUndo(key, prevCount);
+        // Undo時や＋ボタンで完売が解除された際は時間をクリア
+        if (item.soldOutTime) {
+            item.soldOutTime = null;
+        }
+        pushUndo(key, prevCount, prevTime);
         triggerSlotAnimation(key, item.count, 'up');
         playSound('tapUp');
     } else if (direction === 'down' && item.count > 0) {
         item.count--;
-        pushUndo(key, prevCount);
+        
+        // 完売になった瞬間の時間を記録
+        if (item.count === 0) {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            item.soldOutTime = `${hours}:${minutes}`;
+        }
+        
+        pushUndo(key, prevCount, prevTime);
         triggerSlotAnimation(key, item.count, 'down');
 
         // 効果音の選択
@@ -184,12 +199,24 @@ function handleUpdate(key, direction) {
 function triggerSlotAnimation(key, newValue, direction) {
     const container = document.getElementById(`count-${key}`);
     container.innerHTML = '';
+    const item = menuState[key];
 
     const el = document.createElement('div');
 
     if (newValue === 0) {
-        el.innerText = '完売御礼';
-        el.classList.add('sold-out-text');
+        el.classList.add('sold-out-container');
+        const textEl = document.createElement('div');
+        textEl.innerText = '完売御礼';
+        textEl.classList.add('sold-out-text');
+        el.appendChild(textEl);
+        
+        // 売り切れ時間があれば表示
+        if (item.soldOutTime) {
+            const timeEl = document.createElement('div');
+            timeEl.innerText = `${item.soldOutTime} 完売`;
+            timeEl.classList.add('sold-out-time');
+            el.appendChild(timeEl);
+        }
     } else {
         el.innerText = newValue;
     }
@@ -254,6 +281,7 @@ function saveSettings() {
         if (!isNaN(val) && val >= 0) {
             menuState[m.key].initialCount = val;
             menuState[m.key].count = val;
+            menuState[m.key].soldOutTime = null; // リセット時に時間もクリア
         }
     });
 

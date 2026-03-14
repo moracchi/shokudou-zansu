@@ -124,6 +124,13 @@ body {
 }
 
 /* ===== 完売御礼 ===== */
+.sold-out-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .sold-out-text {
     font-family: 'Noto Serif JP', serif;
     font-size: clamp(3rem, 11vh, 8rem) !important;
@@ -131,6 +138,18 @@ body {
     letter-spacing: 0.02em;
     white-space: nowrap;
     font-weight: 900;
+    line-height: 1; /* コンテナ内での余白調整 */
+}
+
+/* 売り切れ時間表示 */
+.sold-out-time {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1rem, 3.5vh, 2.5rem);
+    color: var(--color-soldout);
+    opacity: 0.8;
+    margin-top: 1vh;
+    font-weight: bold;
+    letter-spacing: 0.05em;
 }
 
 /* ===== ＋ボタン ===== */
